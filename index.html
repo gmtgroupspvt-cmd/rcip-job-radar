@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RCIP NOS · Designated-Employer Job Radar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a120e; --panel:#0e1b14; --panel2:#12241b; --raise:#16301f;
+  --line:rgba(180,220,195,.10); --line2:rgba(180,220,195,.18);
+  --ink:#eaf3ec; --muted:#8ba89a; --faint:#5f786c;
+  --green:#46b97a; --green-deep:#1f6e45; --amber:#e7ab43; --amber-soft:rgba(231,171,67,.13);
+  --display:'Bricolage Grotesque',serif; --body:'Hanken Grotesk',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased}
+body{position:relative;overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.bg .glow{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;animation:drift 26s ease-in-out infinite}
+.bg .g1{width:60vw;height:60vw;left:-15vw;top:-25vw;background:radial-gradient(circle,#10643c55,transparent 70%)}
+.bg .g2{width:50vw;height:50vw;right:-15vw;top:10vh;background:radial-gradient(circle,#1a3a6e33,transparent 70%);animation-delay:-8s}
+.bg .g3{width:55vw;height:55vw;left:20vw;bottom:-30vw;background:radial-gradient(circle,#5a3a1033,transparent 70%);animation-delay:-15s}
+.bg svg{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(3vw,4vh)}}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 22px 80px}
+
+header{padding:38px 0 18px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,5vw,52px);line-height:1.02;margin:0;letter-spacing:-.02em}
+h1 .em{color:var(--green)}
+.sub{color:var(--muted);font-size:16px;margin-top:12px;max-width:60ch;line-height:1.5}
+.meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:22px;align-items:baseline}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat .n{font-family:var(--display);font-weight:700;font-size:26px;line-height:1}
+.stat .n.amber{color:var(--amber)} .stat .n.green{color:var(--green)}
+.stat .l{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.updated{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+.compliance{display:flex;gap:10px;align-items:flex-start;background:var(--amber-soft);border:1px solid rgba(231,171,67,.25);
+  border-radius:11px;padding:12px 15px;margin:20px 0 6px;font-size:13px;color:#f0d39a;line-height:1.45}
+.compliance b{color:var(--amber)}
+
+.controls{position:sticky;top:0;z-index:5;background:linear-gradient(180deg,var(--bg) 70%,transparent);padding:18px 0 14px;margin-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{font-size:13px;font-weight:600;padding:7px 13px;border-radius:999px;border:1px solid var(--line2);background:var(--panel);
+  color:var(--muted);cursor:pointer;transition:.16s;display:flex;align-items:center;gap:7px;user-select:none}
+.chip:hover{color:var(--ink);border-color:var(--green)}
+.chip.on{background:var(--raise);color:var(--ink);border-color:var(--green)}
+.chip .dot{width:8px;height:8px;border-radius:50%}
+.chip .ct{font-family:var(--mono);font-size:11px;color:var(--faint)}
+.row2{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:9px;background:var(--panel);border:1px solid var(--line2);
+  border-radius:10px;padding:10px 13px}
+.search input{flex:1;background:none;border:0;color:var(--ink);font-family:var(--body);font-size:14px;outline:none}
+.search svg{flex:none;opacity:.5}
+select{background:var(--panel);border:1px solid var(--line2);color:var(--ink);font-family:var(--body);font-size:13px;
+  border-radius:10px;padding:10px 12px;outline:none;cursor:pointer;max-width:260px}
+.toggle{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);cursor:pointer;padding:9px 13px;
+  border:1px solid var(--line2);border-radius:10px;background:var(--panel);user-select:none}
+.toggle.on{color:var(--green);border-color:var(--green)}
+.toggle .sw{width:30px;height:17px;border-radius:999px;background:var(--line2);position:relative;transition:.2s}
+.toggle.on .sw{background:var(--green-deep)}
+.toggle .sw::after{content:"";position:absolute;width:13px;height:13px;border-radius:50%;background:var(--ink);top:2px;left:2px;transition:.2s}
+.toggle.on .sw::after{left:15px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(335px,1fr));gap:14px;margin-top:8px}
+.card{position:relative;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);
+  border-left:3px solid var(--sc,#46b97a);border-radius:13px;padding:16px 17px 15px;overflow:hidden;
+  opacity:0;transform:translateY(10px);animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.card:hover{border-color:var(--line2)}
+.card .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.card h3{margin:0;font-family:var(--display);font-weight:700;font-size:16.5px;line-height:1.22;letter-spacing:-.01em}
+.card h3 a{color:var(--ink);text-decoration:none}
+.card h3 a:hover{color:var(--green)}
+.new{flex:none;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;color:#062;background:var(--green);
+  padding:3px 7px;border-radius:5px;text-transform:uppercase}
+.co{color:var(--ink);font-size:13.5px;margin-top:7px;font-weight:600}
+.loc{color:var(--muted);font-size:12.5px;margin-top:2px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;align-items:center}
+.noc{font-family:var(--mono);font-size:11px;color:var(--green);border:1px solid rgba(70,185,122,.3);border-radius:6px;padding:3px 7px}
+.pts{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);background:var(--amber-soft);border-radius:6px;padding:3px 7px}
+.wage{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.noctitle{color:var(--muted);font-size:12px;margin-top:9px;line-height:1.35}
+.cap{color:#f0c674;font-size:11.5px;margin-top:8px;display:flex;gap:6px;align-items:flex-start}
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:13px;padding-top:11px;border-top:1px solid var(--line)}
+.desig{font-size:11px;color:var(--faint);line-height:1.3;max-width:75%}
+.desig b{color:var(--muted);font-weight:600}
+.mtype{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);border:1px solid var(--line);border-radius:5px;padding:2px 5px;flex:none}
+.apply{font-size:12px;font-weight:700;color:var(--green);text-decoration:none;white-space:nowrap}
+.apply:hover{text-decoration:underline}
+
+.empty{text-align:center;padding:70px 20px;color:var(--muted)}
+.empty .big{font-family:var(--display);font-size:22px;color:var(--ink);margin-bottom:8px}
+footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--line);color:var(--faint);font-size:12px;line-height:1.6}
+footer a{color:var(--muted)}
+.sechdr{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:18px 0 2px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.sechdr .dot{width:9px;height:9px;border-radius:50%}
+.sechdr .ln{flex:1;height:1px;background:var(--line)}
+</style>
+</head>
+<body>
+<div class="bg">
+  <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+  <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" fill="none">
+    <g stroke="#3a6e52" stroke-width="1">
+      <path d="M-50 620 C 250 560, 420 700, 700 600 S 1100 540, 1260 620"/>
+      <path d="M-50 670 C 250 610, 420 760, 700 650 S 1100 590, 1260 670" opacity=".7"/>
+      <path d="M-50 560 C 200 520, 460 600, 720 520 S 1080 470, 1260 540" opacity=".5"/>
+      <path d="M-50 720 C 280 670, 460 800, 760 700 S 1100 660, 1260 720" opacity=".5"/>
+    </g>
+  </svg>
+</div>
+
+<div class="wrap">
+<header>
+  <div class="kicker">Rural Community Immigration Pilot · North Okanagan-Shuswap</div>
+  <h1>Designated-Employer <span class="em">Job Radar</span></h1>
+  <p class="sub">Public job postings matched to the RCIP <b>designated-employer list</b>, filtered strictly to the <b>25 priority NOC codes</b>. Fast-food &amp; gas-station employers (no longer accepting) are excluded.</p>
+  <div class="meta" id="meta"></div>
+</header>
+
+<div class="compliance">
+  <span>⚠️</span>
+  <div><b>Apply only to publicly posted vacancies.</b> Per RCIP community guidelines, candidates and consultants must <b>not</b> solicit designated employers for job offers — doing so may violate the guidelines. This board only surfaces public Indeed postings.</div>
+</div>
+
+<div class="controls">
+  <div class="chips" id="chips"></div>
+  <div class="row2">
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" placeholder="Search title, employer, town…" autocomplete="off"/>
+    </label>
+    <select id="noc"></select>
+    <div class="toggle" id="newonly"><div class="sw"></div><span>New only</span></div>
+  </div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  <div id="genline"></div>
+  <div style="margin-top:8px">Source: public Indeed postings (CA). Matching is conservative — only employers confidently matched to the official designated list are shown, so some eligible postings under brand/operating names or numbered companies may not appear. Always verify employer designation and eligibility with the <a href="https://rcipnorthokanaganshuswap.com">RCIP North Okanagan-Shuswap</a> program. Not immigration advice.</div>
+</footer>
+</div>
+
+<script>
+const DATA = {"generated_at": "2026-06-29T17:24:39.783222+00:00", "counts": {"total_matched": 4, "new_this_run": 0}, "stats": {"raw": 108, "in_region": 93, "noc_tagged": 38, "matched": 5}, "employer_summary": {"total": 445, "by_sector": {"Business, Finance and Administration": 10, "Education, Law and Social, Community and Government Services": 39, "Health": 28, "Manufacturing and Utilities": 54, "Sales and Services": 211, "Trades and Transport": 103}, "excluded_fastfood_gas": 47, "numbered_unsearchable": 72, "searchable": 347}, "sectors": [{"name": "Business, Finance and Administration", "short": "Business & Finance", "color": "#6aa9ff"}, {"name": "Health", "short": "Health", "color": "#ef6f7b"}, {"name": "Education, Law and Social, Community and Government Services", "short": "Education & Social", "color": "#c08bff"}, {"name": "Sales and Services", "short": "Sales & Services", "color": "#e0a23b"}, {"name": "Trades and Transport", "short": "Trades & Transport", "color": "#46b97a"}, {"name": "Manufacturing and Utilities", "short": "Manufacturing", "color": "#f0883e"}], "nocs": [{"code": "12200", "title": "Accounting technicians and bookkeepers", "sector": "Business, Finance and Administration", "points": 20}, {"code": "13100", "title": "Administrative Officers", "sector": "Business, Finance and Administration", "points": 10}, {"code": "13111", "title": "Legal Administrative Assistant", "sector": "Business, Finance and Administration", "points": 20}, {"code": "14200", "title": "Accounting and related clerks", "sector": "Business, Finance and Administration", "points": 15}, {"code": "21321", "title": "Industrial and Manufacturing Engineers", "sector": "Manufacturing and Utilities", "points": 20}, {"code": "32124", "title": "Pharmacy Technicians", "sector": "Health", "points": 20}, {"code": "33100", "title": "Dental Assistants and Dental Laboratory Assistants", "sector": "Health", "points": 20}, {"code": "33101", "title": "Medical Laboratory Assistants and Related Technical Occupations", "sector": "Health", "points": 20}, {"code": "33102", "title": "Nurse Aides, Orderlies and Patient Service Associates", "sector": "Health", "points": 20}, {"code": "42201", "title": "Social and Community Service Workers", "sector": "Education, Law and Social, Community and Government Services", "points": 20}, {"code": "42202", "title": "Early Childhood Educators and Assistants", "sector": "Education, Law and Social, Community and Government Services", "points": 20}, {"code": "60030", "title": "Restaurant and Food Service Managers", "sector": "Sales and Services", "points": 10}, {"code": "62010", "title": "Retail Sales Supervisors", "sector": "Sales and Services", "points": 10}, {"code": "62021", "title": "Executive Housekeepers", "sector": "Sales and Services", "points": 10}, {"code": "63100", "title": "Insurance Agents and Brokers", "sector": "Business, Finance and Administration", "points": 15}, {"code": "63202", "title": "Bakers", "sector": "Sales and Services", "points": 10}, {"code": "65310", "title": "Light Duty Cleaners", "sector": "Sales and Services", "points": 10}, {"code": "72310", "title": "Carpenters", "sector": "Trades and Transport", "points": 15}, {"code": "72402", "title": "Heating, Refrigeration and Air Conditioning Mechanics", "sector": "Trades and Transport", "points": 15}, {"code": "72410", "title": "Automotive Service Technicians, Truck and Bus Mechanics and Mechanical Repairers", "sector": "Trades and Transport", "points": 15}, {"code": "73300", "title": "Transport Truck Drivers", "sector": "Trades and Transport", "points": 15}, {"code": "75110", "title": "Construction Trades Helpers and Labourers", "sector": "Trades and Transport", "points": 10}, {"code": "90010", "title": "Manufacturing Managers", "sector": "Manufacturing and Utilities", "points": 15}, {"code": "94140", "title": "Process Control and Machine Operators, Food and Beverage Processing", "sector": "Manufacturing and Utilities", "points": 15}, {"code": "94212", "title": "Plastic Products Assemblers, Finishers and Inspectors", "sector": "Manufacturing and Utilities", "points": 10}], "jobs": [{"title": "Accounts Receivable Administrator I (Temporary Term)", "company": "Kal Tire", "location": "Vernon, BC", "posted_on": "June 18, 2026", "job_type": "Temporary", "compensation": "", "url": "https://to.indeed.com/aaqcwxytrx72", "noc": "14200", "noc_title": "Accounting and related clerks", "points": 15, "sector": "Trades and Transport", "noc_sector": "Business, Finance and Administration", "min_wage": 22.0, "cap": "1 per employer per year", "employer_legal": "Kal Tire", "match_type": "token", "posted_date": "2026-06-18", "is_new": false}, {"title": "Truck Driver - Class 1", "company": "Varsteel Ltd.", "location": "Vernon, BC", "posted_on": "June 15, 2026", "job_type": "Permanent", "compensation": "", "url": "https://to.indeed.com/aavhlvvvzsjq", "noc": "73300", "noc_title": "Transport Truck Drivers", "points": 15, "sector": "Trades and Transport", "noc_sector": "Trades and Transport", "min_wage": 22.0, "cap": null, "employer_legal": "K-Rod Steel a div. of Varsteel ltd", "match_type": "contains", "posted_date": "2026-06-15", "is_new": false}, {"title": "Anti-Racism Outreach Worker", "company": "Vernon Immigrant Services", "location": "Vernon, BC", "posted_on": "June 15, 2026", "job_type": "Temporary", "compensation": "", "url": "https://to.indeed.com/aayzf7kzknjz", "noc": "42201", "noc_title": "Social and Community Service Workers", "points": 20, "sector": "Education, Law and Social, Community and Government Services", "noc_sector": "Education, Law and Social, Community and Government Services", "min_wage": 22.0, "cap": "10 per employer per year; max 50 for all employers in 2026", "employer_legal": "Vernon and District Immigrant and Services Society", "match_type": "exact", "posted_date": "2026-06-15", "is_new": false}, {"title": "Mix Operator", "company": "Rogers Foods Ltd.", "location": "Armstrong, BC", "posted_on": "June 08, 2026", "job_type": "Full-time", "compensation": "", "url": "https://to.indeed.com/aadlhwxwl6kk", "noc": "94140", "noc_title": "Process Control and Machine Operators, Food and Beverage Processing", "points": 15, "sector": "Manufacturing and Utilities", "noc_sector": "Manufacturing and Utilities", "min_wage": 22.0, "cap": null, "employer_legal": "Rogers Foods Ltd.", "match_type": "exact", "posted_date": "2026-06-08", "is_new": false}]};
+const $ = s => document.querySelector(s);
+const state = {sector:null, noc:"", q:"", newonly:false};
+const scolor = {}; DATA.sectors.forEach(s=>scolor[s.name]=s);
+
+function fmtAge(iso){ if(!iso) return ""; const d=new Date(iso+"T00:00:00"); const days=Math.round((Date.now()-d)/864e5);
+  if(days<=0) return "today"; if(days===1) return "1 day ago"; if(days<30) return days+" days ago"; return Math.round(days/30)+" mo ago"; }
+
+function renderMeta(){
+  const c=DATA.counts, e=DATA.employer_summary||{};
+  $("#meta").innerHTML = `
+    <div class="stat"><span class="n green">${c.total_matched??0}</span><span class="l">Matched jobs</span></div>
+    <div class="stat"><span class="n amber">${c.new_this_run??0}</span><span class="l">New this run</span></div>
+    <div class="stat"><span class="n">${e.searchable??0}</span><span class="l">Searchable employers</span></div>
+    <div class="stat"><span class="n">25</span><span class="l">Priority NOCs</span></div>
+    <div class="updated">updated ${new Date(DATA.generated_at).toLocaleString('en-CA',{dateStyle:'medium',timeStyle:'short'})}</div>`;
+  $("#genline").textContent = `Generated ${new Date(DATA.generated_at).toLocaleString('en-CA')} · ${DATA.jobs.length} matched postings from ${DATA.stats.raw||0} scanned · ${DATA.stats.in_region||0} in-region · ${DATA.stats.noc_tagged||0} priority-NOC.`;
+}
+
+function renderChips(){
+  const counts={}; DATA.jobs.forEach(j=>counts[j.sector]=(counts[j.sector]||0)+1);
+  let html=`<div class="chip ${state.sector===null?'on':''}" data-s=""><span>All sectors</span><span class="ct">${DATA.jobs.length}</span></div>`;
+  DATA.sectors.forEach(s=>{ const n=counts[s.name]||0;
+    html+=`<div class="chip ${state.sector===s.name?'on':''}" data-s="${s.name}"><span class="dot" style="background:${s.color}"></span><span>${s.short}</span><span class="ct">${n}</span></div>`; });
+  $("#chips").innerHTML=html;
+  $("#chips").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{ state.sector=c.dataset.s||null; renderChips(); renderGrid(); });
+}
+
+function renderNocFilter(){
+  const present=new Set(DATA.jobs.map(j=>j.noc));
+  let html=`<option value="">All priority NOCs</option>`;
+  DATA.nocs.filter(n=>present.has(n.code)).forEach(n=>html+=`<option value="${n.code}">NOC ${n.code} · ${n.title}</option>`);
+  const sel=$("#noc"); sel.innerHTML=html; sel.value=state.noc; sel.onchange=()=>{state.noc=sel.value;renderGrid();};
+}
+
+function match(j){
+  if(state.sector && j.sector!==state.sector) return false;
+  if(state.noc && j.noc!==state.noc) return false;
+  if(state.newonly && !j.is_new) return false;
+  if(state.q){ const q=state.q.toLowerCase();
+    if(!(j.title+" "+j.company+" "+j.location+" "+j.employer_legal+" "+j.noc_title).toLowerCase().includes(q)) return false; }
+  return true;
+}
+
+function card(j,i){
+  const sc=scolor[j.sector]||{color:'#46b97a'};
+  const cap=j.cap?`<div class="cap">◆ <span>Cap: ${j.cap}</span></div>`:"";
+  return `<article class="card" style="--sc:${sc.color};animation-delay:${Math.min(i*28,520)}ms">
+    <div class="top">
+      <h3><a href="${j.url}" target="_blank" rel="noopener">${j.title}</a></h3>
+      ${j.is_new?'<span class="new">New</span>':''}
+    </div>
+    <div class="co">${j.company}</div>
+    <div class="loc">${j.location} · <span style="color:var(--faint)">${fmtAge(j.posted_date)} · ${j.job_type||''}</span></div>
+    <div class="tags">
+      <span class="noc">NOC ${j.noc}</span>
+      <span class="pts">${j.points} pts</span>
+      <span class="wage">$${j.min_wage.toFixed(2)}/hr min</span>
+    </div>
+    <div class="noctitle">${j.noc_title}</div>
+    ${cap}
+    <div class="foot">
+      <div class="desig"><b>${sc.short||j.sector}</b> · ${j.employer_legal}</div>
+      <a class="apply" href="${j.url}" target="_blank" rel="noopener">Apply ↗</a>
+    </div>
+  </article>`;
+}
+
+function renderGrid(){
+  const list=DATA.jobs.filter(match);
+  if(!list.length){ $("#grid").innerHTML=`<div class="empty"><div class="big">No matching postings right now</div>
+    <div>Either no designated employer currently has a priority-NOC opening posted, or your filters are too tight. New matches arrive on each scheduled run.</div></div>`; return; }
+  // group by sector when no single-sector filter
+  let html="";
+  if(state.sector){ list.forEach((j,i)=>html+=card(j,i)); }
+  else{
+    const order=DATA.sectors.map(s=>s.name);
+    const groups={}; list.forEach(j=>(groups[j.sector]=groups[j.sector]||[]).push(j));
+    let i=0;
+    order.filter(s=>groups[s]).forEach(s=>{ const sc=scolor[s];
+      html+=`<div class="sechdr"><span class="dot" style="background:${sc.color}"></span>${sc.short} · ${groups[s].length}<span class="ln"></span></div>`;
+      groups[s].forEach(j=>html+=card(j,i++)); });
+  }
+  $("#grid").innerHTML=html;
+}
+
+$("#q").oninput=e=>{state.q=e.target.value;renderGrid();};
+$("#newonly").onclick=function(){state.newonly=!state.newonly;this.classList.toggle('on',state.newonly);renderGrid();};
+renderMeta(); renderChips(); renderNocFilter(); renderGrid();
+</script>
+</body>
+</html>
